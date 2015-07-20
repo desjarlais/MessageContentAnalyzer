@@ -15,7 +15,7 @@ var userprofile;
             item = Office.context.mailbox.item;
             diag = Office.context.mailbox.diagnostics;
             userprofile = Office.context.mailbox.userProfile;
-
+            
             // build up html and populate data
             buildHtmlTable(item.itemType);
             displayMailboxInfo();
@@ -55,7 +55,7 @@ var userprofile;
                 '<tr id="rowmeetingsuggestions"><th>Meeting Suggestions:</th><td id="meetings"></td></tr>' +
                 '<tr id="rowtasksuggestions"><th>Task Suggestions:</th><td id="tasks"></td></tr>';
 
-        if (type === "message") {
+        if (type == Office.MailboxEnums.ItemType.Message) {
             // now populate the message specific data
             var msg = '<tr class="header"><td colspan="2" span style="cursor:default">Message Info [+/-]</td></tr>' +
                 '<tr id="rowattachmentid"><th>Attachment ID:</th><td id="attachmentid"></td></tr>' +
@@ -115,7 +115,7 @@ var userprofile;
         addFieldToTable(item.attachments, '#attachmentid', "rowattachmentid");
 
         // populate unique fields
-        if (type === "message") {
+        if (type == Offie.MailboxEnums.ItemType.Message) {
             $('#conversationid').text(item.conversationId);
             $('#messageid').text(item.internetMessageId);
             $('#sender').text(item.sender.emailAddress);
@@ -150,6 +150,7 @@ var userprofile;
         }
         else {
             var fieldStartRow = document.getElementById(rowTag).rowIndex + 1;
+            var attendees = item.requiredAttendees;
 
             for (var i = 0; i < field.length; i++) {
                 var row = table.insertRow(fieldStartRow);
@@ -159,7 +160,21 @@ var userprofile;
                     cell1.innerHTML = field[i].name;
                     cell2.innerHTML = field[i].id;
                 }
-                else if (rowTag === "rowrequiredattendees" || rowTag === "rowcc" || rowTag === "rowbcc" || rowTag === "rowfrom" || rowTag === "roworganizer" || rowTag === "rowto") {
+                else if (rowTag === "rowrequiredattendees") {
+                    if (_isOrganzer())
+                    {
+                        for (var x = 0; x < attendees.length; x++)
+                        {
+
+                        }
+                        cell2.innerHTML = field[i].emailAddress;
+                    }
+                    else
+                    {
+                        cell2.innerHTML = "You are not the organizer.";
+                    }
+                }
+                else if (rowTag === rowTag === "rowcc" || rowTag === "rowbcc" || rowTag === "rowfrom" || rowTag === "roworganizer" || rowTag === "rowto") {
                     cell2.innerHTML = field[i].emailAddress;
                 }
                 else {
@@ -259,4 +274,28 @@ var userprofile;
         var responseSpan = document.getElementById("response");
         responseSpan.innerText = response;
     };
+
+    // check if an item is an appointment or meeting request
+    var _isCalendarItem = function()
+    {
+        if ((item.itemType == Office.MailboxEnums.ItemType.Appointment) ||
+            (item.itemClass.indexOf("IPM.Schedule") != -1))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    // check if the current user is the organizer of a meeting
+    var _isOrganzer = function()
+    {
+        if ((item.itemType == Office.MailboxEnums.ItemType.Appointment) &&
+            (userprofile.emailAddress == item.organizer.emailAddress))
+        {
+            return true;
+        }
+
+        return false;
+    }
 })();

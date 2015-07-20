@@ -71,11 +71,15 @@
     <Content Include="AppCompose\Home\Home.css" />
     <Content Include="AppCompose\Home\Home.html" />
     <Content Include="AppCompose\Home\Home.js" />
+    <Content Include="AppCompose\Home\Mobile.html" />
+    <Content Include="AppCompose\Home\Tablet.html" />
     <Content Include="AppRead\App.css" />
     <Content Include="AppRead\App.js" />
     <Content Include="AppRead\Home\Home.css" />
     <Content Include="AppRead\Home\Home.html" />
     <Content Include="AppRead\Home\Home.js" />
+    <Content Include="AppRead\Home\Mobile.html" />
+    <Content Include="AppRead\Home\Tablet.html" />
     <Content Include="Content\Office.css" />
     <Content Include="Content\OfficeThemes.css" />
     <Content Include="Images\Close.png" />
