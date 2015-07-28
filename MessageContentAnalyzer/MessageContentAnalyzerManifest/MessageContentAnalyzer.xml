@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <!--Created:cb85b80c-f585-40ff-8bfc-12ff4d0e34a9-->
-<OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="MailApp">
+<OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="MailApp" xmlns:bt="http://schemas.microsoft.com/office/officeappbasictype/1.0" xmlns:mailappor="http://schemas.microsoft.com/office/mailappversionoverrides/1.0">
   <Id>0073447c-c520-4e57-8c38-34bd903ebc7a</Id>
   <Version>1.0.0.0</Version>
   <ProviderName>desjarlais</ProviderName>
@@ -49,4 +49,99 @@
     <Rule xsi:type="ItemIs" ItemType="Appointment" FormType="Read" />
   </Rule>
   <DisableEntityHighlighting>false</DisableEntityHighlighting>
+  <VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides" xsi:type="VersionOverridesV1_0">
+    <Description resid="residDescription" />
+    <Requirements>
+      <bt:Sets DefaultMinVersion="1.3">
+        <bt:Set Name="Mailbox" />
+      </bt:Sets>
+    </Requirements>
+    <Hosts>
+      <Host xsi:type="MailHost">
+        <DesktopFormFactor>
+          <FunctionFile resid="residDesktopFuncUrl" />
+          <ExtensionPoint xsi:type="CustomPane">
+            <RequestedHeight>100</RequestedHeight>
+            <SourceLocation resid="readTaskpane"/>
+            <Rule xsi:type="RuleCollection" Mode="Or">
+              <Rule xsi:type="ItemIs" ItemType="Message"/>
+              <Rule xsi:type="ItemHasAttachment"/>
+              <Rule xsi:type="ItemHasKnownEntity" EntityType="Address"/>
+            </Rule>
+          </ExtensionPoint>
+          <ExtensionPoint xsi:type="MessageReadCommandSurface">
+            <OfficeTab id="TabDefault">
+              <Group id="msgreadTabMessage.grp1">
+                <Label resid="residTemplateManagement" />
+                <Tooltip resid="residTemplateManagementTip" />
+                <Control xsi:type="Button" id="msgreadTabMessage.grp1.btnView">
+                  <Label resid="residViewTemplates" />
+                  <Tooltip resid="residViewTemplatesTip" />
+                  <Supertip>
+                    <Title resid="residVewAndManageTemplates" />
+                    <Description resid="residViewManageTemplatesSprTip" />
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="icon1_16x16" />
+                    <bt:Image size="32" resid="icon1_32x32" />
+                    <bt:Image size="80" resid="icon1_80x80" />
+                  </Icon>
+                  <Action xsi:type="ShowTaskpane">
+                    <SourceLocation resid="residManageTemplatesUrl" />
+                  </Action>
+                </Control>
+              </Group>
+            </OfficeTab>
+          </ExtensionPoint>
+        </DesktopFormFactor>
+      </Host>
+    </Hosts>
+
+    <Resources>
+      <bt:Images>
+        <bt:Image id="icon1_16x16" DefaultValue="https://contoso.com/owa/a216ceed-7791-4635-a752-5a4ac0a5eb93/images/app_icon_small.png" >
+          <bt:Override Locale="ar-sa" Value="https://contoso.com/owa/a216ceed-7791-4635-a752-5a4ac0a5eb93/images/app_icon_small_arsa.png" />
+          // add information for other locales
+        </bt:Image>
+        <bt:Image id="icon1_32x32" DefaultValue="https://contoso.com/owa/a216ceed-7791-4635-a752-5a4ac0a5eb93/images/app_icon.png" >
+          <bt:Override Locale="ar-sa" Value="https://contoso.com/owa/a216ceed-7791-4635-a752-5a4ac0a5eb93/images/app_icon_arsa.png" />
+          // add information for other locales
+        </bt:Image>
+        <bt:Image id="icon1_80x80" DefaultValue="https://contoso.com/owa/a216ceed-7791-4635-a752-5a4ac0a5eb93/images/app_icon_large.png" >
+          <bt:Override Locale="ar-sa" Value="https://contoso.com/owa/a216ceed-7791-4635-a752-5a4ac0a5eb93/images/app_icon_large_arsa.png" />
+          // add information for other locales
+        </bt:Image>
+      </bt:Images>
+      <bt:Urls>
+        <bt:Url id="residDesktopFuncUrl" DefaultValue="myProjectFolder/urls/page_appcmdcode.html" >
+          <bt:Override Locale="ar-sa" Value="myProjectFolder/urls/page_appcmdcode.html?lcid=ar-sa" />
+          // add information for other locales
+        </bt:Url>
+        <bt:Url id="residManageTemplatesUrl" DefaultValue="https://dobeta.azurewebsites.net/#/">
+        </bt:Url>
+        <bt:Url id="residAddNewTemplateUrl" DefaultValue="myProjectFolder/urls/page_appcmdcode_addnewtp.html">
+          <bt:Override Locale="ar-sa" Value="myProjectFolder/urls/page_appcmdcode_addnewtp.html?lcid=ar-sa" />
+          // add information for other locales
+        </bt:Url>
+        // add information for other locales
+      </bt:Urls>
+      <bt:ShortStrings>
+        <bt:String id="residTemplateManagement" DefaultValue="Do.com">
+          <bt:Override Locale="ar-sa" Value="قالب الإدارة" />
+          // add information for other locales
+        </bt:String>
+        <bt:String id="residViewTemplates" DefaultValue="Launch Do.com">
+          <bt:Override Locale="ar-sa" Value="عرض قوالب" />
+          // add information for other locales
+        </bt:String>
+        <bt:String id="residVewAndManageTemplates" DefaultValue="View and Manage Templates">
+          <bt:Override Locale="ar-sa" Value="عرض وإدارة القوالب" />
+          // add information for other locales
+        </bt:String>
+      </bt:ShortStrings>
+      <bt:LongStrings>
+        // add information for long strings, as needed
+      </bt:LongStrings>
+    </Resources>
+  </VersionOverrides>
 </OfficeApp>

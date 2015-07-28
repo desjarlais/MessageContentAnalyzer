@@ -160,21 +160,31 @@ var userprofile;
                     cell1.innerHTML = field[i].name;
                     cell2.innerHTML = field[i].id;
                 }
-                else if (rowTag === "rowrequiredattendees") {
-                    if (_isOrganzer())
-                    {
-                        for (var x = 0; x < attendees.length; x++)
-                        {
-
-                        }
-                        cell2.innerHTML = field[i].emailAddress;
+                else if (rowTag === "roworganizer") {
+                    if (_isOrganizer()) {
+                        cell2.innerHTML = field[i].emailAddress + "is the organizer.";
                     }
-                    else
-                    {
-                        cell2.innerHTML = "You are not the organizer.";
+                    else {
+                        cell2.innerHTML = field[i].emailAddress + " is not the organizer.";
                     }
                 }
-                else if (rowTag === rowTag === "rowcc" || rowTag === "rowbcc" || rowTag === "rowfrom" || rowTag === "roworganizer" || rowTag === "rowto") {
+                else if (rowTag === "rowrequiredattendees") {
+                    if (_isOrganizer()) {
+                        cell2.innerHTML = field[i].emailAddress + " || Attendee Response = " + attendees[i].appointmentResponse;
+                    }
+                    else {
+                        cell2.innerHTML = field[i].emailAddress;
+                    }
+                }
+                else if (rowTag === "rowoptionalattendees") {
+                    if (_isOrganizer()) {
+                        cell2.innerHTML = field[i].emailAddress + " || Attendee Response = " + attendees[i].appointmentResponse;
+                    }
+                    else {
+                        cell2.innerHTML = field[i].emailAddress;
+                    }
+                }
+                else if (rowTag === rowTag === "rowcc" || rowTag === "rowbcc" || rowTag === "rowfrom" || rowTag === "rowto") {
                     cell2.innerHTML = field[i].emailAddress;
                 }
                 else {
@@ -288,7 +298,7 @@ var userprofile;
     }
 
     // check if the current user is the organizer of a meeting
-    var _isOrganzer = function()
+    var _isOrganizer = function()
     {
         if ((item.itemType == Office.MailboxEnums.ItemType.Appointment) &&
             (userprofile.emailAddress == item.organizer.emailAddress))
