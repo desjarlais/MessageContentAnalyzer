@@ -43,6 +43,7 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="MessageContentAnalyzerManifest\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{a3a7a137-21b6-4676-82e5-9f84bd7579cc}</SharePointProjectItemId>
     </None>

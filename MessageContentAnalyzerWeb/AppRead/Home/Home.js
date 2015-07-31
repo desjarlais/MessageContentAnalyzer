@@ -4,6 +4,8 @@ var item;
 var table;
 var diag;
 var userprofile;
+var settings;
+var lastAccess;
 
 (function () {
     "use strict";
@@ -15,11 +17,19 @@ var userprofile;
             item = Office.context.mailbox.item;
             diag = Office.context.mailbox.diagnostics;
             userprofile = Office.context.mailbox.userProfile;
-            
+            settings = Office.context.roamingSettings;
+
             // build up html and populate data
             buildHtmlTable(item.itemType);
             displayMailboxInfo();
             displayMessageDetails(item.itemType);
+
+            // get the previous roamed setting
+            lastAccess = settings.get("LastAccess");
+
+            // set roamingsettings and save to the server
+            settings.set("LastAccess", Date());
+            settings.saveAsync(saveSettingsCallback);
 
             // initialize button clicks
             $('#sendRequest').click(sendRequest);
@@ -28,6 +38,10 @@ var userprofile;
             })
         });
     };
+
+    // save roaming settings callback
+    function saveSettingsCallback(asyncResult) {
+    }
 
     // build html table
     function buildHtmlTable(type) {
@@ -40,6 +54,7 @@ var userprofile;
                 '<tr id="rowhostname"><th>Host Name:</th><td id="hostname"></td></tr>' +
                 '<tr id="rowhostversion"><th>Host Version:</th><td id="hostversion"></td></tr>' +
                 '<tr id="rowowaview"><th>OWA View:</th><td id="owaview"></td></tr>' +
+                '<tr id="rowlastaccess"><th>Last Accessed:</th><td id="lastaccess"></td></tr>' +
                 '<tr class="header"><td colspan="2" span style="cursor:default">Item Info [+/-]</td></tr>' +
                 '<tr id="rowdatetimecreated"><th>DateTimeCreated:</th><td id="dtcreate"></td></tr>' +
                 '<tr id="rowdatetimemodified"><th>DateTimeModified:</th><td id="dtmodify"></td></tr>' +
@@ -105,6 +120,7 @@ var userprofile;
         $('#dtmodify').text(item.dateTimeModified);
         $('#itemclass').text(item.itemClass);
         $('#itemtype').text(item.itemType);
+        $('#lastaccess').text(settings.get("LastAccess"));
     }
 
     // display the fields and entities for the current item
@@ -115,7 +131,7 @@ var userprofile;
         addFieldToTable(item.attachments, '#attachmentid', "rowattachmentid");
 
         // populate unique fields
-        if (type == Offie.MailboxEnums.ItemType.Message) {
+        if (type == Office.MailboxEnums.ItemType.Message) {
             $('#conversationid').text(item.conversationId);
             $('#messageid').text(item.internetMessageId);
             $('#sender').text(item.sender.emailAddress);
