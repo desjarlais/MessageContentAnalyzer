@@ -6,6 +6,8 @@ var diag;
 var userprofile;
 var settings;
 var lastAccess;
+var customProps;
+var customPropsError;
 
 (function () {
     "use strict";
@@ -19,6 +21,10 @@ var lastAccess;
             userprofile = Office.context.mailbox.userProfile;
             settings = Office.context.roamingSettings;
 
+            // load custom properties for the current item
+            item.loadCustomPropertiesAsync(customPropsCallback);
+            updateProperty("myProp", "value1");
+
             // build up html and populate data
             buildHtmlTable(item.itemType);
             displayMailboxInfo();
@@ -29,7 +35,7 @@ var lastAccess;
 
             // set roamingsettings and save to the server
             settings.set("LastAccess", Date());
-            settings.saveAsync(saveSettingsCallback);
+            settings.saveAsync(saveSettingsCallback);          
 
             // initialize button clicks
             $('#sendRequest').click(sendRequest);
@@ -38,11 +44,35 @@ var lastAccess;
             })
         });
     };
-
-    // save roaming settings callback
+    
+    // save custom and roaming settings callback
     function saveSettingsCallback(asyncResult) {
+        if (asyncResult.status == Office.AsyncResultStatus.Failed) {
+            customPropsError = asyncResult.error;
+        }
     }
 
+    // custom prop callback
+    function customPropsCallback(asyncResult) {
+        if (asyncResult.status == Office.AsyncResultStatus.Failed) {
+            customPropsError = asyncResult.error;
+        }
+        else {
+            customProps = asyncResult.value;
+        }
+    }
+
+    function updateProperty(name, value) {
+        if (customProps == undefined) {
+            customPropsError = "undefined";
+        }
+        else
+        {
+            customProps.set(name, value);
+            customProps.saveAsync(saveSettingsCallback);
+        }
+    }
+    
     // build html table
     function buildHtmlTable(type) {
         // start with common info that doesn't depend on the type of item (message/appointment)
@@ -61,6 +91,7 @@ var lastAccess;
                 '<tr id="rowitemclass"><th>Item Class:</th><td id="itemcclass"></td></tr>' +
                 '<tr id="rowitemtype"><th>Item Type:</th><td id="itemtype"></td></tr>' +
                 '<tr id="rowewsid"><th>EWS Item ID:</th><td id="ewsid"></td></tr>' +
+                '<tr id="rowcustomprop"><th>Custom Property 1:</th><td id="customprop"></td></tr>' +
                 '<tr class="header"><td colspan="2" span style="cursor:default">Entities [+/-]</td></tr>' +
                 '<tr id="rowaddresses"><th>Addresses:</th><td id="addresses"></td></tr>' +
                 '<tr id="rowcontacts"><th>Contacts:</th><td id="contacts"></td></tr>' +
@@ -121,6 +152,14 @@ var lastAccess;
         $('#itemclass').text(item.itemClass);
         $('#itemtype').text(item.itemType);
         $('#lastaccess').text(settings.get("LastAccess"));
+        if (customPropsError === "undefined") {
+            $('#customprop').text(customPropsError);
+        }
+        else
+        {
+            $('#customprop').text(customProps.get("myProp"));
+        }
+        
     }
 
     // display the fields and entities for the current item
@@ -164,10 +203,21 @@ var lastAccess;
         if (field.length === 0) {
             $(cellTag).text("Field values unavailable.");
         }
+        else if (field.length == undefined)
+        {
+            if (rowTag === "roworganizer") {
+                if (_isOrganizer()) {
+                    $(cellTag).text("you are the organizer.");
+                }
+                else {
+                    $(cellTag).text(item.organizer.emailAddress + " is the organizer.");
+                }
+            }
+        }
         else {
             var fieldStartRow = document.getElementById(rowTag).rowIndex + 1;
             var attendees = item.requiredAttendees;
-
+            
             for (var i = 0; i < field.length; i++) {
                 var row = table.insertRow(fieldStartRow);
                 var cell1 = row.insertCell(0);
@@ -175,14 +225,6 @@ var lastAccess;
                 if (rowTag === "rowattachmentid") {
                     cell1.innerHTML = field[i].name;
                     cell2.innerHTML = field[i].id;
-                }
-                else if (rowTag === "roworganizer") {
-                    if (_isOrganizer()) {
-                        cell2.innerHTML = field[i].emailAddress + "is the organizer.";
-                    }
-                    else {
-                        cell2.innerHTML = field[i].emailAddress + " is not the organizer.";
-                    }
                 }
                 else if (rowTag === "rowrequiredattendees") {
                     if (_isOrganizer()) {
