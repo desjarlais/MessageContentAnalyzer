@@ -23,7 +23,8 @@ var customPropsError;
 
             // load custom properties for the current item
             item.loadCustomPropertiesAsync(customPropsCallback);
-            updateProperty("myProp", "value1");
+            $("#footer").hide();
+            setCustomProperty("myProp", "value1");
 
             // build up html and populate data
             buildHtmlTable(item.itemType);
@@ -62,17 +63,32 @@ var customPropsError;
         }
     }
 
-    function updateProperty(name, value) {
+    function setCustomProperty(key, value) {
         if (customProps == undefined) {
             customPropsError = "undefined";
+            showToast("Load error", "Custom properties are not loaded.");
         }
         else
         {
-            customProps.set(name, value);
+            customProps.set(key, value);
             customProps.saveAsync(saveSettingsCallback);
         }
     }
     
+    // Displays the toast for 10 seconds.
+    function showToast(title, message) {
+
+        var notice = document.getElementById('notice');
+        var output = document.getElementById('output');
+
+        notice.innerHTML = title;
+        output.innerHTML = message;
+
+        $("#footer").show("slow");
+
+        window.setTimeout(function () { $("#footer").hide("slow") }, 10000);
+    };
+
     // build html table
     function buildHtmlTable(type) {
         // start with common info that doesn't depend on the type of item (message/appointment)
