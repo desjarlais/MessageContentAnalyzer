@@ -6,8 +6,10 @@ var diag;
 var userprofile;
 var settings;
 var lastAccess;
-var customProps;
-var customPropsError;
+var customProp;
+var customProp2;
+var customPropError;
+var roamingPropError;
 
 (function () {
     "use strict";
@@ -21,11 +23,10 @@ var customPropsError;
             userprofile = Office.context.mailbox.userProfile;
             settings = Office.context.roamingSettings;
 
-            // load custom properties for the current item
-            item.loadCustomPropertiesAsync(customPropsCallback);
+            // load custom props for the current item
+            customProp2 = item.loadCustomPropertiesAsync(customPropCallback);
             $("#footer").hide();
-            setCustomProperty("myProp", "value1");
-
+            
             // build up html and populate data
             buildHtmlTable(item.itemType);
             displayMailboxInfo();
@@ -34,60 +35,44 @@ var customPropsError;
             // get the previous roamed setting
             lastAccess = settings.get("LastAccess");
 
-            // set roamingsettings and save to the server
-            settings.set("LastAccess", Date());
-            settings.saveAsync(saveSettingsCallback);          
-
             // initialize button clicks
             $('#sendRequest').click(sendRequest);
+            $('#getCustomProps').click(getCustomProps);
             $('.header').click(function () {
                 $(this).nextUntil('tr.header').slideToggle(10);
             })
         });
     };
     
-    // save custom and roaming settings callback
-    function saveSettingsCallback(asyncResult) {
-        if (asyncResult.status == Office.AsyncResultStatus.Failed) {
-            customPropsError = asyncResult.error;
-        }
+    // app level setting for the mailbox
+    function setRoamingSetting() {
+        settings.set("LastAccess", Date());
+        settings.saveAsync(roamingCallback);
     }
 
-    // custom prop callback
-    function customPropsCallback(asyncResult) {
+    function roamingCallback(asyncResult) {
         if (asyncResult.status == Office.AsyncResultStatus.Failed) {
-            customPropsError = asyncResult.error;
-        }
-        else {
-            customProps = asyncResult.value;
-        }
-    }
-
-    function setCustomProperty(key, value) {
-        if (customProps == undefined) {
-            customPropsError = "undefined";
-            showToast("Load error", "Custom properties are not loaded.");
-        }
-        else
-        {
-            customProps.set(key, value);
-            customProps.saveAsync(saveSettingsCallback);
+            roamingPropError = asyncResult.error.message;
         }
     }
     
-    // Displays the toast for 10 seconds.
-    function showToast(title, message) {
+    // item level custom prop
+    function customPropCallback(asyncResult) {
+        if (asyncResult.status == Office.AsyncResultStatus.Failed) {
+            customPropError = asyncResult.error.message;
+        }
+        else {
+            customProp = asyncResult.value;
+            customProp.set("myProp", "value1");
+            customProp.saveAsync(saveCallback);
+        }
+    }
 
-        var notice = document.getElementById('notice');
-        var output = document.getElementById('output');
-
-        notice.innerHTML = title;
-        output.innerHTML = message;
-
-        $("#footer").show("slow");
-
-        window.setTimeout(function () { $("#footer").hide("slow") }, 10000);
-    };
+    function saveCallback(asyncResult) {
+        if (asyncResult.status == Office.AsyncResultStatus.Failed) {
+            customPropError = asyncResult.error.message;
+        }
+    }
 
     // build html table
     function buildHtmlTable(type) {
@@ -168,14 +153,6 @@ var customPropsError;
         $('#itemclass').text(item.itemClass);
         $('#itemtype').text(item.itemType);
         $('#lastaccess').text(settings.get("LastAccess"));
-        if (customPropsError === "undefined") {
-            $('#customprop').text(customPropsError);
-        }
-        else
-        {
-            $('#customprop').text(customProps.get("myProp"));
-        }
-        
     }
 
     // display the fields and entities for the current item
@@ -338,6 +315,12 @@ var customPropsError;
 
         return result;
     };
+
+    // get custom properties
+    function getCustomProps() {
+        var customVal = document.getElementById("itemCustomProps");
+        customVal.innerText = customProp.get("myProp");
+    }
 
     // Send an EWS request for the message's subject. 
     function sendRequest() {

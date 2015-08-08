@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="pragma" content="no-cache">
     <title></title>
     <script src="../../Scripts/jquery-2.1.4.js" type="text/javascript"></script>
 
@@ -27,20 +28,20 @@
         </div>
         <div id="Content">
             <div class="padding">
-                <h1>EWS Requests</h1>
-                <button id="sendRequest">GetItem</button>
-
+                <h2>EWS Request</h2>
+                <button id="sendRequest">Get Subject</button>
                 <h2>Response</h2>
                 <div style="overflow: scroll; height: 100px;">
                     <span id="response" />
                 </div>
+                <h2>Custom Properties</h2>
+                <div style="overflow: scroll; height: 100px;">
+                    <button id="getCustomProps">Get Custom Props</button>
+                    <br />
+                    <span id="itemCustomProps" />
+                </div>
             </div>
-        </div>
-        <div id="footer" class="toast">
-            <span id="notice" style="font-weight: bold; margin-top: 5px"></span>
-            <br />
-            <span id="output"></span>
-        </div>
+        </div>        
     </div>
 </body>
 </html>
