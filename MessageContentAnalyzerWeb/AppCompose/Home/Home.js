@@ -15,6 +15,7 @@ var table;
             $('#get-subject').click(getSubject);
             $('#add-to-recipients').click(addToRecipients);
             $('#add-attachment').click(addAttachments);
+            $('#add-bodytext').click(setItemBody);
         });
     };
 
@@ -55,6 +56,66 @@ var table;
         } else if (item.itemType === Office.MailboxEnums.ItemType.Appointment) {
             Office.cast.item.toAppointmentCompose(item).addFileAttachmentAsync("https://i.imgur.com/ucI9vyz.png", "image file");
         }
+    }
+
+    // Get the body type of the composed item, and set data in 
+    // in the appropriate data type in the item body.
+    function setItemBody() {
+        item.body.getTypeAsync(
+            function (result) {
+                if (result.status == Office.AsyncResultStatus.Failed) {
+                    app.showNotification(result.error.message);
+                }
+                else {
+                    // Successfully got the type of item body.
+                    // Set data of the appropriate type in body.
+                    if (result.value == Office.MailboxEnums.BodyType.Html) {
+                        // Body is of HTML type.
+                        // Specify HTML in the coercionType parameter
+                        // of setSelectedDataAsync.
+                        item.body.setSelectedDataAsync(
+                            '<b> Kindly note we now open 7 days a week.</b>',
+                            {
+                                coercionType: Office.CoercionType.Html,
+                                asyncContext: { var3: 1, var4: 2 }
+                            },
+                            function (asyncResult) {
+                                if (asyncResult.status ==
+                                    Office.AsyncResultStatus.Failed) {
+                                    app.showNotification(result.error.message);
+                                }
+                                else {
+                                    // Successfully set data in item body.
+                                    // Do whatever appropriate for your scenario,
+                                    // using the arguments var3 and var4 as applicable.
+                                    app.showNotification("HTML text added.");
+                                }
+                            });
+                    }
+                    else {
+                        // Body is of text type. 
+                        item.body.setSelectedDataAsync(
+                            ' Kindly note we now open 7 days a week.',
+                            {
+                                coercionType: Office.CoercionType.Text,
+                                asyncContext: { var3: 1, var4: 2 }
+                            },
+                            function (asyncResult) {
+                                if (asyncResult.status ==
+                                    Office.AsyncResultStatus.Failed) {
+                                    app.showNotification(result.error.message);
+                                }
+                                else {
+                                    // Successfully set data in item body.
+                                    // Do whatever appropriate for your scenario,
+                                    // using the arguments var3 and var4 as applicable.
+                                    app.showNotification("Plain text added.");
+                                }
+                            });
+                    }
+                }
+            });
+
     }
 
 })();
