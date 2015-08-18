@@ -20,21 +20,28 @@
     <script src="Home.js" type="text/javascript"></script>
 </head>
 <body>
+    <div id="content-header">
+        <div class="padding">
+            <h1>Message Content Analyzer</h1>
+        </div>
+    </div>
     <div id="content-main">
         <div class="padding">
             <h1 id="title">Message Content Analyzer</h1>
-            <table id="details"></table>
-        </div>
-        <div id="Content">
-            <div class="padding">
-                <h1>EWS Requests</h1>
-                <button id="sendRequest">GetItem</button>
-
-                <h2>Response</h2>
-                <div style="overflow: scroll; height: 100px;">
-                    <span id="response" />
-                </div>
-            </div>
+            <button id="set-subject">Set subject</button>
+            <button id="get-subject">Get subject</button>
+            <br />
+            <button id="set-location">Set location</button>
+            <button id="get-location">Get location</button>
+            <br />
+            <button id="set-start-time">Set start time</button>
+            <button id="get-start-time">Get start time</button>
+            <br />
+            <button id="add-to-recipients">Add yourself to recipients list</button>
+            <br />
+            <button id="add-attachment">Add attachment</button>
+            <br />
+            <button id="add-bodytext">Add body text</button>
         </div>
     </div>
 </body>
