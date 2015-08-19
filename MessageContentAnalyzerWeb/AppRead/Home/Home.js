@@ -235,7 +235,7 @@ var roamingPropError;
                         cell2.innerHTML = field[i].emailAddress;
                     }
                 }
-                else if (rowTag === rowTag === "rowcc" || rowTag === "rowbcc" || rowTag === "rowfrom" || rowTag === "rowto") {
+                else if (rowTag === "rowcc" || rowTag === "rowbcc" || rowTag === "rowfrom" || rowTag === "rowto") {
                     cell2.innerHTML = field[i].emailAddress;
                 }
                 else {

@@ -6,7 +6,7 @@
   <ProviderName>desjarlais</ProviderName>
   <DefaultLocale>en-US</DefaultLocale>
   <DisplayName DefaultValue="MessageContentAnalyzer" />
-  <Description DefaultValue="MessageContentAnalyzer"/>
+  <Description DefaultValue="Message Content Analyzer"/>
   <Hosts>
     <Host Name="Mailbox" />
   </Hosts>
@@ -19,11 +19,11 @@
     <Form xsi:type="ItemRead">
       <DesktopSettings>
         <SourceLocation DefaultValue="~remoteAppUrl/AppRead/Home/Home.html"/>
-        <RequestedHeight>250</RequestedHeight>
+        <RequestedHeight>400</RequestedHeight>
       </DesktopSettings>
       <TabletSettings>
         <SourceLocation DefaultValue="~remoteAppUrl/AppRead/Home/Tablet.html" />
-        <RequestedHeight>250</RequestedHeight>
+        <RequestedHeight>350</RequestedHeight>
       </TabletSettings>
       <PhoneSettings>
         <SourceLocation DefaultValue="~remoteAppUrl/AppRead/Home/Mobile.html" />
