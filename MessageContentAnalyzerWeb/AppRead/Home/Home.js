@@ -7,7 +7,6 @@ var userprofile;
 var settings;
 var lastAccess;
 var customProp;
-var customProp2;
 var customPropError;
 var roamingPropError;
 
@@ -24,7 +23,7 @@ var roamingPropError;
             settings = Office.context.roamingSettings;
 
             // load custom props for the current item
-            customProp2 = item.loadCustomPropertiesAsync(customPropCallback);
+            item.loadCustomPropertiesAsync(customPropCallback);
             $("#footer").hide();
             
             // build up html and populate data
@@ -63,7 +62,7 @@ var roamingPropError;
         }
         else {
             customProp = asyncResult.value;
-            customProp.set("myProp", "value1");
+            customProp.set("myProp", "myValue");
             customProp.saveAsync(saveCallback);
         }
     }
