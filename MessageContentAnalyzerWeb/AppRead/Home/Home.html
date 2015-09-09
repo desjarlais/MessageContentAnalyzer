@@ -23,20 +23,26 @@
 <body>
     <div id="content-main">
         <div class="padding">
-            <h1 id="title">Message Content Analyzer</h1>
+            <h1 class="ms-font-su" id="title">Message Content Analyzer</h1>
             <table id="details"></table>
         </div>
         <div id="Content">
             <div class="padding">
                 <h2>EWS Request</h2>
-                <button id="sendRequest">Get Subject</button>
+                <button class="ms-Button" id="sendRequest">
+                    <span class="ms-Button-label">Get Subject</span>
+                    <span class="ms-Button-description">Get Subject via EWS</span>
+                </button>
                 <h2>Response</h2>
                 <div style="overflow: scroll; height: 100px;">
                     <span id="response" />
                 </div>
                 <h2>Custom Properties</h2>
                 <div style="overflow: scroll; height: 100px;">
-                    <button id="getCustomProps">Get Custom Props</button>
+                    <button class="ms-Button" id="getCustomProps">
+                        <span class="ms-Button-label">Get Custom Props</span>
+                        <span class="ms-Button-description">Get custom properties for the current item</span>
+                    </button>
                     <br />
                     <span id="itemCustomProps" />
                 </div>

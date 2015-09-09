@@ -6,6 +6,10 @@
     <title></title>
     <script src="../../Scripts/jquery-2.1.4.js" type="text/javascript"></script>
 
+    <!-- Office UI Fabric references -->
+    <link rel="stylesheet" href="https://appsforoffice.microsoft.com/fabric/1.0/fabric.min.css">
+    <link rel="stylesheet" href="https://appsforoffice.microsoft.com/fabric/1.0/fabric.components.min.css">
+
     <link href="../../Content/Office.css" rel="stylesheet" type="text/css" />
     <script src="https://appsforoffice.microsoft.com/lib/1.1/hosted/office.js" type="text/javascript"></script>
 
@@ -22,26 +26,52 @@
 <body>
     <div id="content-header">
         <div class="padding">
-            <h1>Message Content Analyzer</h1>
+            <h1 class="ms-font-su">Message Content Analyzer</h1>
         </div>
     </div>
     <div id="content-main">
         <div class="padding">
-            <h1 id="title">Message Content Analyzer</h1>
-            <button id="set-subject">Set subject</button>
-            <button id="get-subject">Get subject</button>
+            <button class="ms-Button" id="set-subject">
+                <span class="ms-Button-label">Set Subject</span>
+                <span class="ms-Button-description">Set subject for current item</span>
+            </button>
+            <button class="ms-Button" id="get-subject">
+                <span class="ms-Button-label">Get Subject</span>
+                <span class="ms-Button-description">Display subject for current item</span>
+            </button>
             <br />
-            <button id="set-location">Set location</button>
-            <button id="get-location">Get location</button>
+            <button class="ms-Button" id="set-location">
+                <span class="ms-Button-label">Set Location</span>
+                <span class="ms-Button-description">Set location for current item</span>
+            </button>
+            <button class="ms-Button" id="get-location">
+                <span class="ms-Button-label">Get Location</span>
+                <span class="ms-Button-description">Display location for current item</span>
+            </button>
             <br />
-            <button id="set-start-time">Set start time</button>
-            <button id="get-start-time">Get start time</button>
+            <button class="ms-Button" id="set-start-time">
+                <span class="ms-Button-label">Set Start Time</span>
+                <span class="ms-Button-description">Set the start time for the appointment</span>
+            </button>
+            <button class="ms-Button" id="get-start-time">
+                <span class="ms-Button-label">Get Start Time</span>
+                <span class="ms-Button-description">Display appointment start time</span>
+            </button>
             <br />
-            <button id="add-to-recipients">Add yourself to recipients list</button>
+            <button class="ms-Button" id="add-to-recipients">
+                <span class="ms-Button-label">Add Recipient</span>
+                <span class="ms-Button-description">Add yourself to the recipients list</span>
+            </button>
             <br />
-            <button id="add-attachment">Add attachment</button>
+            <button class="ms-Button" id="add-attachment">
+                <span class="ms-Button-label">Add attachment</span>
+                <span class="ms-Button-description">Add sample attachment to the current item</span>
+            </button>
             <br />
-            <button id="add-bodytext">Add body text</button>
+            <button class="ms-Button" id="add-bodytext">
+                <span class="ms-Button-label">Add Body Text</span>
+                <span class="ms-Button-description">Add sample text to the body of the current item</span>
+            </button>
         </div>
     </div>
 </body>
