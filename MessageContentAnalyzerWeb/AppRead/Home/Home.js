@@ -1,5 +1,6 @@
 ﻿/// <reference path="../App.js" />
 
+var mbx;
 var item;
 var table;
 var diag;
@@ -17,6 +18,7 @@ var roamingPropError;
         $(document).ready(function () {
             app.initialize();
             table = document.getElementById("details");
+            mbx = Office.context.mailbox;
             item = Office.context.mailbox.item;
             diag = Office.context.mailbox.diagnostics;
             userprofile = Office.context.mailbox.userProfile;
@@ -25,11 +27,17 @@ var roamingPropError;
             // load custom props for the current item
             item.loadCustomPropertiesAsync(customPropCallback);
             $("#footer").hide();
-            
+
             // build up html and populate data
             buildHtmlTable(item.itemType);
             displayMailboxInfo();
             displayMessageDetails(item.itemType);
+
+            // get callback token
+            mbx.getCallbackTokenAsync(asyncCallback);
+
+            // get user identity token
+            mbx.getUserIdentityTokenAsync(asyncCallbackUserIdentityToken);
 
             // get the previous roamed setting
             lastAccess = settings.get("LastAccess");
@@ -37,12 +45,23 @@ var roamingPropError;
             // initialize button clicks
             $('#sendRequest').click(sendRequest);
             $('#getCustomProps').click(getCustomProps);
+            $('#getMessageForm').click(getMessageForm);
             $('.header').click(function () {
                 $(this).nextUntil('tr.header').slideToggle(10);
             })
         });
     };
-    
+
+    // callback token callback
+    function asyncCallback(asyncResult) {
+        $('#callbacktoken').text(asyncResult.value);
+    }
+
+    // callback token callback for user identity
+    function asyncCallbackUserIdentityToken(asyncResult) {
+        $('#useridentitytoken').text(asyncResult.value);
+    }
+
     // app level setting for the mailbox
     function setRoamingSetting() {
         settings.set("LastAccess", Date());
@@ -54,7 +73,7 @@ var roamingPropError;
             roamingPropError = asyncResult.error.message;
         }
     }
-    
+
     // item level custom prop
     function customPropCallback(asyncResult) {
         if (asyncResult.status == Office.AsyncResultStatus.Failed) {
@@ -80,6 +99,9 @@ var roamingPropError;
                 '<tr id="rowdisplayname"><th>Display Name:</th><td id="displayname"></td></tr>' +
                 '<tr id="rowemailaddress"><th>Email Address:</th><td id="emailaddress"></td></tr>' +
                 '<tr id="rowtimezone"><th>TimeZone:</th><td id="timezone"></td></tr>' +
+                '<tr id="rowcallbacktoken"><th>Callback Token:</th><td id="callbacktoken"></td></tr>' +
+                '<tr id="rowuseridentitytoken"><th>User Identity Token:</th><td id="useridentitytoken"></td></tr>' +
+                '<tr id="rowewsUrl"><th>EWS Url:</th><td id="ewsurl"></td></tr>' +
                 '<tr class="header"><td colspan="2" span style="cursor:default">Diagnostics [+/-]</td></tr>' +
                 '<tr id="rowhostname"><th>Host Name:</th><td id="hostname"></td></tr>' +
                 '<tr id="rowhostversion"><th>Host Version:</th><td id="hostversion"></td></tr>' +
@@ -147,6 +169,7 @@ var roamingPropError;
         $('#hostversion').text(diag.hostVersion);
         $('#hostowaview').text(diag.OWAView);
         $('#ewsid').text(item.itemId);
+        $('#ewsurl').text(mbx.ewsUrl);
         $('#dtcreate').text(item.dateTimeCreated);
         $('#dtmodify').text(item.dateTimeModified);
         $('#itemclass').text(item.itemClass);
@@ -195,8 +218,7 @@ var roamingPropError;
         if (field.length === 0) {
             $(cellTag).text("Field values unavailable.");
         }
-        else if (field.length == undefined)
-        {
+        else if (field.length == undefined) {
             if (rowTag === "roworganizer") {
                 if (_isOrganizer()) {
                     $(cellTag).text("you are the organizer.");
@@ -209,7 +231,7 @@ var roamingPropError;
         else {
             var fieldStartRow = document.getElementById(rowTag).rowIndex + 1;
             var attendees = item.requiredAttendees;
-            
+
             for (var i = 0; i < field.length; i++) {
                 var row = table.insertRow(fieldStartRow);
                 var cell1 = row.insertCell(0);
@@ -341,12 +363,16 @@ var roamingPropError;
         responseSpan.innerText = response;
     };
 
+    function getMessageForm() {
+        if (item.itemType == Office.MailboxEnums.ItemType.Message) {
+            mbx.displayMessageForm(item.itemId);
+        }
+    }
+
     // check if an item is an appointment or meeting request
-    var _isCalendarItem = function()
-    {
+    var _isCalendarItem = function () {
         if ((item.itemType == Office.MailboxEnums.ItemType.Appointment) ||
-            (item.itemClass.indexOf("IPM.Schedule") != -1))
-        {
+            (item.itemClass.indexOf("IPM.Schedule") != -1)) {
             return true;
         }
 
@@ -354,11 +380,9 @@ var roamingPropError;
     }
 
     // check if the current user is the organizer of a meeting
-    var _isOrganizer = function()
-    {
+    var _isOrganizer = function () {
         if ((item.itemType == Office.MailboxEnums.ItemType.Appointment) &&
-            (userprofile.emailAddress == item.organizer.emailAddress))
-        {
+            (userprofile.emailAddress == item.organizer.emailAddress)) {
             return true;
         }
 
