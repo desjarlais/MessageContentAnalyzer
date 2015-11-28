@@ -50,11 +50,7 @@ var roamingPropError;
             })
         });
     };
-<<<<<<< HEAD
-    
-=======
 
->>>>>>> d6ab36b198d18ba7bfd29350b68eaa7b02708045
     // callback token callback
     function asyncCallback(asyncResult) {
         $('#callbacktoken').text(asyncResult.value);
