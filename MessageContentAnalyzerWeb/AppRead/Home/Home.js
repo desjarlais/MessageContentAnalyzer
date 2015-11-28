@@ -27,7 +27,7 @@ var roamingPropError;
             // load custom props for the current item
             item.loadCustomPropertiesAsync(customPropCallback);
             $("#footer").hide();
-            
+
             // build up html and populate data
             buildHtmlTable(item.itemType);
             displayMailboxInfo();
@@ -50,7 +50,11 @@ var roamingPropError;
             })
         });
     };
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> d6ab36b198d18ba7bfd29350b68eaa7b02708045
     // callback token callback
     function asyncCallback(asyncResult) {
         $('#callbacktoken').text(asyncResult.value);
@@ -72,7 +76,7 @@ var roamingPropError;
             roamingPropError = asyncResult.error.message;
         }
     }
-    
+
     // item level custom prop
     function customPropCallback(asyncResult) {
         if (asyncResult.status == Office.AsyncResultStatus.Failed) {
@@ -217,8 +221,7 @@ var roamingPropError;
         if (field.length === 0) {
             $(cellTag).text("Field values unavailable.");
         }
-        else if (field.length == undefined)
-        {
+        else if (field.length == undefined) {
             if (rowTag === "roworganizer") {
                 if (_isOrganizer()) {
                     $(cellTag).text("you are the organizer.");
@@ -231,7 +234,7 @@ var roamingPropError;
         else {
             var fieldStartRow = document.getElementById(rowTag).rowIndex + 1;
             var attendees = item.requiredAttendees;
-            
+
             for (var i = 0; i < field.length; i++) {
                 var row = table.insertRow(fieldStartRow);
                 var cell1 = row.insertCell(0);
@@ -315,12 +318,16 @@ var roamingPropError;
         }
     }
 
+    function getMessageForm() {
+        if (item.itemType == Office.MailboxEnums.ItemType.Message) {
+            mbx.displayMessageForm(item.itemId);
+        }
+    }
+
     // check if an item is an appointment or meeting request
-    var _isCalendarItem = function()
-    {
+    var _isCalendarItem = function () {
         if ((item.itemType == Office.MailboxEnums.ItemType.Appointment) ||
-            (item.itemClass.indexOf("IPM.Schedule") != -1))
-        {
+            (item.itemClass.indexOf("IPM.Schedule") != -1)) {
             return true;
         }
 
@@ -328,11 +335,9 @@ var roamingPropError;
     }
 
     // check if the current user is the organizer of a meeting
-    var _isOrganizer = function()
-    {
+    var _isOrganizer = function () {
         if ((item.itemType == Office.MailboxEnums.ItemType.Appointment) &&
-            (userprofile.emailAddress == item.organizer.emailAddress))
-        {
+            (userprofile.emailAddress == item.organizer.emailAddress)) {
             return true;
         }
 

@@ -5,8 +5,13 @@
   <Version>1.0.0.1</Version>
   <ProviderName>brandesoft</ProviderName>
   <DefaultLocale>en-US</DefaultLocale>
+<<<<<<< HEAD
   <DisplayName DefaultValue="Message Content Analyzer" />
   <Description DefaultValue="Troubleshooting Addin that displays Message/Appt details"/>
+=======
+  <DisplayName DefaultValue="MessageContentAnalyzer" />
+  <Description DefaultValue="Message Content Analyzer"/>
+>>>>>>> d6ab36b198d18ba7bfd29350b68eaa7b02708045
   <Hosts>
     <Host Name="Mailbox" />
   </Hosts>
@@ -18,11 +23,19 @@
   <FormSettings>
     <Form xsi:type="ItemRead">
       <DesktopSettings>
+<<<<<<< HEAD
         <SourceLocation DefaultValue="https://brandesoft.azurewebsites.net/AppRead/Home/Home.html"/>
         <RequestedHeight>450</RequestedHeight>
       </DesktopSettings>
       <TabletSettings>
         <SourceLocation DefaultValue="https://brandesoft.azurewebsites.net/AppRead/Home/Tablet.html" />
+=======
+        <SourceLocation DefaultValue="~remoteAppUrl/AppRead/Home/Home.html"/>
+        <RequestedHeight>400</RequestedHeight>
+      </DesktopSettings>
+      <TabletSettings>
+        <SourceLocation DefaultValue="~remoteAppUrl/AppRead/Home/Tablet.html" />
+>>>>>>> d6ab36b198d18ba7bfd29350b68eaa7b02708045
         <RequestedHeight>350</RequestedHeight>
       </TabletSettings>
       <PhoneSettings>
