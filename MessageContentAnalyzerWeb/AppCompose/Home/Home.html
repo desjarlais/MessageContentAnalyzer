@@ -22,86 +22,42 @@
 <body>
     <div id="content-header">
         <div class="padding">
-            <h1 class="office-docTheme-primary-bgColor">Message Content Analyzer</h1>
-            <h1 class="ms-font-su">Message Content Analyzer</h1>
+            <h1>Message Content Analyzer</h1>
         </div>
     </div>
     <div id="content-main">
         <div class="padding">
-            <button class="ms-Button" id="set-subject">
-                <span class="ms-Button-label">Set Subject</span>
-            </button>
-            <button class="ms-Button" id="get-subject">
-                <span class="ms-Button-label">Get Subject</span>
-            </button>
-            <br />
-            <button class="ms-Button" id="set-location">
-                <span class="ms-Button-label">Set Location</span>
-            </button>
-            <button class="ms-Button" id="get-location">
-                <span class="ms-Button-label">Get Location</span>
-            </button>
-            <br />
-            <button class="ms-Button" id="set-start-time">
-                <span class="ms-Button-label">Set Start Time</span>
-            </button>
-            <button class="ms-Button" id="get-start-time">
-                <span class="ms-Button-label">Get Start Time</span>
-            </button>
-            <br />
-            <button class="ms-Button" id="add-to-recipients">
-                <span class="ms-Button-label">Add Recipient</span>
-            </button>
-            <br />
-            <button class="ms-Button" id="add-attachment">
-                <span class="ms-Button-label">Add attachment</span>
-            </button>
-            <br />
-            <button class="ms-Button" id="add-bodytext">
-                <span class="ms-Button-label">Add Body Text</span>
-            </button>
+            <table id="buttons">
+                <tr class="header"><td colspan="2">Custom Buttons</td></tr>
+                <tr>
+                    <td><button id="set-subject"><span>Set Subject</span></button></td>
+                    <td><button id="get-subject"><span>Get Subject</span></button></td>
+                </tr>
+                <tr>
+                    <td><button id="set-location"><span>Set Location</span></button></td>
+                    <td><button id="get-location"><span>Get Location</span></button></td>
+                </tr>
+                <tr>
+                    <td><button id="set-subject"><span>Set Subject</span></button></td>
+                    <td><button id="get-subject"><span>Get Subject</span></button></td>
+                </tr>
+                <tr>
+                    <td><button id="set-start-time"><span>Set Start Time</span></button></td>
+                    <td><button id="get-start-time"><span>Get Start Time</span></button></td>
+                </tr>
+                <tr>
+                    <td><button id="add-to-recipients"><span>Add Recipient</span></button></td>
+                    <td><button id="add-attachment"><span>Add Attachment</span></button></td>
+                </tr>
+                <tr>
+                    <td><button id="add-bodytext"><span>Add Body Text</span></button></td>
+                    <td><button id="add-attachment"><span>Add Attachment</span></button></td>
+                </tr>
+            </table>
         </div>
         <div>
-            <span id="debuglog">Debug Log:</span>
-            <br />
-                <span class="ms-Button-description">Set subject for current item</span>
-            <button class="ms-Button" id="get-subject">
-                <span class="ms-Button-label">Get Subject</span>
-                <span class="ms-Button-description">Display subject for current item</span>
-            </button>
-            <br />
-            <button class="ms-Button" id="set-location">
-                <span class="ms-Button-label">Set Location</span>
-                <span class="ms-Button-description">Set location for current item</span>
-            </button>
-            <button class="ms-Button" id="get-location">
-                <span class="ms-Button-label">Get Location</span>
-                <span class="ms-Button-description">Display location for current item</span>
-            </button>
-            <br />
-            <button class="ms-Button" id="set-start-time">
-                <span class="ms-Button-label">Set Start Time</span>
-                <span class="ms-Button-description">Set the start time for the appointment</span>
-            </button>
-            <button class="ms-Button" id="get-start-time">
-                <span class="ms-Button-label">Get Start Time</span>
-                <span class="ms-Button-description">Display appointment start time</span>
-            </button>
-            <br />
-            <button class="ms-Button" id="add-to-recipients">
-                <span class="ms-Button-label">Add Recipient</span>
-                <span class="ms-Button-description">Add yourself to the recipients list</span>
-            </button>
-            <br />
-            <button class="ms-Button" id="add-attachment">
-                <span class="ms-Button-label">Add attachment</span>
-                <span class="ms-Button-description">Add sample attachment to the current item</span>
-            </button>
-            <br />
-            <button class="ms-Button" id="add-bodytext">
-                <span class="ms-Button-label">Add Body Text</span>
-                <span class="ms-Button-description">Add sample text to the body of the current item</span>
-            </button>
+            <h1>Debug Log:</h1>
+            <span id="debuglog"></span>
         </div>
     </div>
 </body>
