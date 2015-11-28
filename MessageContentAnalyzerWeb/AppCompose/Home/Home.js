@@ -9,9 +9,9 @@ var table;
     Office.initialize = function (reason) {
         $(document).ready(function () {
             app.initialize();
-            table = document.getElementById("details");
+            table = document.getElementById("debuglog2");
             item = Office.context.mailbox.item;
-
+            
             $('#set-subject').click(setSubject);
             $('#get-subject').click(getSubject);
 
@@ -25,8 +25,19 @@ var table;
             $('#add-attachment').click(addAttachments);
 
             $('#add-bodytext').click(setItemBody);
+
+            debugLog("init", "init completed");
         });
     };
+
+    // debug output function
+    function debugLog(debugType, debugValue) {
+        var spanElement = "<span id=" + debugType + ">" + " " + debugValue + "</span>";
+
+        var prevVal = document.getElementById('debuglog').innerHTML;
+        var output = document.getElementById('debuglog');
+        output.innerHTML = prevVal + spanElement;
+    }
 
     // set the subject of the item
     function setSubject() {
@@ -141,6 +152,7 @@ var table;
         } else if (item.itemType === Office.MailboxEnums.ItemType.Appointment) {
             Office.cast.item.toAppointmentCompose(item).requiredAttendees.addAsync([addressToAdd]);
         }
+        debugLog("addToRecipients", "recipients added");
     }
 
     // add generic image file as test attachment

@@ -1,5 +1,6 @@
 ﻿/// <reference path="../App.js" />
 
+var mbx;
 var item;
 var table;
 var diag;
@@ -7,7 +8,6 @@ var userprofile;
 var settings;
 var lastAccess;
 var customProp;
-var customProp2;
 var customPropError;
 var roamingPropError;
 
@@ -18,13 +18,14 @@ var roamingPropError;
         $(document).ready(function () {
             app.initialize();
             table = document.getElementById("details");
+            mbx = Office.context.mailbox;
             item = Office.context.mailbox.item;
             diag = Office.context.mailbox.diagnostics;
             userprofile = Office.context.mailbox.userProfile;
             settings = Office.context.roamingSettings;
 
             // load custom props for the current item
-            customProp2 = item.loadCustomPropertiesAsync(customPropCallback);
+            item.loadCustomPropertiesAsync(customPropCallback);
             $("#footer").hide();
             
             // build up html and populate data
@@ -32,18 +33,34 @@ var roamingPropError;
             displayMailboxInfo();
             displayMessageDetails(item.itemType);
 
+            // get callback token
+            mbx.getCallbackTokenAsync(asyncCallback);
+
+            // get user identity token
+            mbx.getUserIdentityTokenAsync(asyncCallbackUserIdentityToken);
+
             // get the previous roamed setting
             lastAccess = settings.get("LastAccess");
 
             // initialize button clicks
-            $('#sendRequest').click(sendRequest);
             $('#getCustomProps').click(getCustomProps);
+            $('#getMessageForm').click(getMessageForm);
             $('.header').click(function () {
                 $(this).nextUntil('tr.header').slideToggle(10);
             })
         });
     };
     
+    // callback token callback
+    function asyncCallback(asyncResult) {
+        $('#callbacktoken').text(asyncResult.value);
+    }
+
+    // callback token callback for user identity
+    function asyncCallbackUserIdentityToken(asyncResult) {
+        $('#useridentitytoken').text(asyncResult.value);
+    }
+
     // app level setting for the mailbox
     function setRoamingSetting() {
         settings.set("LastAccess", Date());
@@ -63,7 +80,7 @@ var roamingPropError;
         }
         else {
             customProp = asyncResult.value;
-            customProp.set("myProp", "value1");
+            customProp.set("myProp", "myValue");
             customProp.saveAsync(saveCallback);
         }
     }
@@ -81,6 +98,9 @@ var roamingPropError;
                 '<tr id="rowdisplayname"><th>Display Name:</th><td id="displayname"></td></tr>' +
                 '<tr id="rowemailaddress"><th>Email Address:</th><td id="emailaddress"></td></tr>' +
                 '<tr id="rowtimezone"><th>TimeZone:</th><td id="timezone"></td></tr>' +
+                '<tr id="rowcallbacktoken"><th>Callback Token:</th><td id="callbacktoken"></td></tr>' +
+                '<tr id="rowuseridentitytoken"><th>User Identity Token:</th><td id="useridentitytoken"></td></tr>' +
+                '<tr id="rowewsUrl"><th>EWS Url:</th><td id="ewsurl"></td></tr>' +
                 '<tr class="header"><td colspan="2" span style="cursor:default">Diagnostics [+/-]</td></tr>' +
                 '<tr id="rowhostname"><th>Host Name:</th><td id="hostname"></td></tr>' +
                 '<tr id="rowhostversion"><th>Host Version:</th><td id="hostversion"></td></tr>' +
@@ -148,6 +168,7 @@ var roamingPropError;
         $('#hostversion').text(diag.hostVersion);
         $('#hostowaview').text(diag.OWAView);
         $('#ewsid').text(item.itemId);
+        $('#ewsurl').text(mbx.ewsUrl);
         $('#dtcreate').text(item.dateTimeCreated);
         $('#dtmodify').text(item.dateTimeModified);
         $('#itemclass').text(item.itemClass);
@@ -235,7 +256,7 @@ var roamingPropError;
                         cell2.innerHTML = field[i].emailAddress;
                     }
                 }
-                else if (rowTag === rowTag === "rowcc" || rowTag === "rowbcc" || rowTag === "rowfrom" || rowTag === "rowto") {
+                else if (rowTag === "rowcc" || rowTag === "rowbcc" || rowTag === "rowfrom" || rowTag === "rowto") {
                     cell2.innerHTML = field[i].emailAddress;
                 }
                 else {
@@ -282,65 +303,17 @@ var roamingPropError;
         }
     }
 
-    function getSoapEnvelope(request) {
-        // Wrap an Exchange Web Services request in a SOAP envelope. 
-        var result =
-        '<?xml version="1.0" encoding="utf-8"?>' +
-        '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"' +
-        '               xmlns:xsd="http://www.w3.org/2001/XMLSchema"' +
-        '               xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"' +
-        '               xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types">' +
-        '  <soap:Header>' +
-        '    <RequestServerVersion Version="Exchange2013_SP1" xmlns="http://schemas.microsoft.com/exchange/services/2006/types" soap:mustUnderstand="0" />' +
-        '  </soap:Header>' +
-        '  <soap:Body>' + request +
-        ' </soap:Body>' +
-        '</soap:Envelope>';
-
-        return result;
-    };
-
-    function getSubjectRequest(id) {
-        // Return a GetItem EWS operation request for the subject of the specified item.  
-        var result =
-        '    <GetItem xmlns="http://schemas.microsoft.com/exchange/services/2006/messages">' +
-        '      <ItemShape>' +
-        '        <t:BaseShape>IdOnly</t:BaseShape>' +
-        '        <t:AdditionalProperties>' +
-        '            <t:FieldURI FieldURI="item:Subject"/>' +
-        '        </t:AdditionalProperties>' +
-        '      </ItemShape>' +
-        '      <ItemIds><t:ItemId Id="' + id + '"/></ItemIds>' +
-        '    </GetItem>';
-
-        return result;
-    };
-
     // get custom properties
     function getCustomProps() {
         var customVal = document.getElementById("itemCustomProps");
         customVal.innerText = customProp.get("myProp");
     }
 
-    // Send an EWS request for the message's subject. 
-    function sendRequest() {
-        // Create a local variable that contains the mailbox. 
-        var mailbox = Office.context.mailbox;
-        var request = getSubjectRequest(mailbox.item.itemId);
-        var envelope = getSoapEnvelope(request);
-
-        mailbox.makeEwsRequestAsync(envelope, callback);
-    };
-
-    // Function called when the EWS request is complete. 
-    function callback(asyncResult) {
-        var response = asyncResult.value;
-        var context = asyncResult.context;
-
-        // Process the returned response here. 
-        var responseSpan = document.getElementById("response");
-        responseSpan.innerText = response;
-    };
+    function getMessageForm() {
+        if (item.itemType == Office.MailboxEnums.ItemType.Message) {
+            mbx.displayMessageForm(item.itemId);
+        }
+    }
 
     // check if an item is an appointment or meeting request
     var _isCalendarItem = function()
