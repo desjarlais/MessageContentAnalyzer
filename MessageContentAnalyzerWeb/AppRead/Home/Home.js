@@ -48,8 +48,19 @@ var roamingPropError;
             $('.header').click(function () {
                 $(this).nextUntil('tr.header').slideToggle(10);
             })
+
+            debugLog("init", "init completed");
         });
     };
+
+    // debug output function
+    function debugLog(debugType, debugValue) {
+        var spanElement = "<span id=" + debugType + ">" + " " + debugValue + "</span>";
+
+        var prevVal = document.getElementById('debuglog').innerHTML;
+        var output = document.getElementById('debuglog');
+        output.innerHTML = prevVal + spanElement;
+    }
 
     // callback token callback
     function asyncCallback(asyncResult) {
