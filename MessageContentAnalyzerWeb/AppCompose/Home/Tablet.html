@@ -27,21 +27,37 @@
     </div>
     <div id="content-main">
         <div class="padding">
-            <h1 id="title">Message Content Analyzer</h1>
-            <button id="set-subject">Set subject</button>
-            <button id="get-subject">Get subject</button>
-            <br />
-            <button id="set-location">Set location</button>
-            <button id="get-location">Get location</button>
-            <br />
-            <button id="set-start-time">Set start time</button>
-            <button id="get-start-time">Get start time</button>
-            <br />
-            <button id="add-to-recipients">Add yourself to recipients list</button>
-            <br />
-            <button id="add-attachment">Add attachment</button>
-            <br />
-            <button id="add-bodytext">Add body text</button>
+            <table id="buttons">
+                <tr class="header"><td colspan="2">Custom Buttons</td></tr>
+                <tr>
+                    <td><button id="set-subject"><span>Set Subject</span></button></td>
+                    <td><button id="get-subject"><span>Get Subject</span></button></td>
+                </tr>
+                <tr>
+                    <td><button id="set-location"><span>Set Location</span></button></td>
+                    <td><button id="get-location"><span>Get Location</span></button></td>
+                </tr>
+                <tr>
+                    <td><button id="set-subject"><span>Set Subject</span></button></td>
+                    <td><button id="get-subject"><span>Get Subject</span></button></td>
+                </tr>
+                <tr>
+                    <td><button id="set-start-time"><span>Set Start Time</span></button></td>
+                    <td><button id="get-start-time"><span>Get Start Time</span></button></td>
+                </tr>
+                <tr>
+                    <td><button id="add-to-recipients"><span>Add Recipient</span></button></td>
+                    <td><button id="add-attachment"><span>Add Attachment</span></button></td>
+                </tr>
+                <tr>
+                    <td><button id="add-bodytext"><span>Add Body Text</span></button></td>
+                    <td><button id="add-attachment"><span>Add Attachment</span></button></td>
+                </tr>
+            </table>
+        </div>
+        <div>
+            <h1>Debug Log:</h1>
+            <span id="debuglog"></span>
         </div>
     </div>
 </body>
