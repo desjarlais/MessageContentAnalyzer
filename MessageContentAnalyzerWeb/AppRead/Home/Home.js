@@ -325,12 +325,6 @@ var roamingPropError;
         }
     }
 
-    function getMessageForm() {
-        if (item.itemType == Office.MailboxEnums.ItemType.Message) {
-            mbx.displayMessageForm(item.itemId);
-        }
-    }
-
     // check if an item is an appointment or meeting request
     var _isCalendarItem = function () {
         if ((item.itemType == Office.MailboxEnums.ItemType.Appointment) ||
