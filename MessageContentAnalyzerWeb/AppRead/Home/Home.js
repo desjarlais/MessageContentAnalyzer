@@ -120,7 +120,7 @@ var roamingPropError;
                 '<tr class="header"><td colspan="2" span style="cursor:default">Item Info [+/-]</td></tr>' +
                 '<tr id="rowdatetimecreated"><th>DateTimeCreated:</th><td id="dtcreate"></td></tr>' +
                 '<tr id="rowdatetimemodified"><th>DateTimeModified:</th><td id="dtmodify"></td></tr>' +
-                '<tr id="rowitemclass"><th>Item Class:</th><td id="itemcclass"></td></tr>' +
+                '<tr id="rowitemclass"><th>Item Class:</th><td id="itemclass"></td></tr>' +
                 '<tr id="rowitemtype"><th>Item Type:</th><td id="itemtype"></td></tr>' +
                 '<tr id="rowewsid"><th>EWS Item ID:</th><td id="ewsid"></td></tr>' +
                 '<tr id="rowcustomprop"><th>Custom Property 1:</th><td id="customprop"></td></tr>' +
